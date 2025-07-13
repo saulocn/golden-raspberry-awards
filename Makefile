@@ -5,21 +5,15 @@ clean:
 	./mvnw clean
 
 build: clean
-	./mvnw compile
+	./mvnw clean package -Dquarkus.package.jar.type=uber-jar
 
 run:
 	./mvnw quarkus:dev
 
-build-docker: clean
-	./mvnw package -Dquarkus.container-image.build=true
+build-docker: build
+	docker build --no-cache --progress=plain -t saulocn/golden-raspberry-awards .
 
 run-docker: build-docker
-	docker run -i --rm -p 8080:8080 saulocn/golden-raspberry-awards
-
-build-native-docker: clean
-	./mvnw package -Dnative -Dquarkus.native.container-build=true -Dquarkus.container-image.build=true
-
-run-native-docker: build-native-docker
 	docker run -i --rm -p 8080:8080 saulocn/golden-raspberry-awards
 
 logs:

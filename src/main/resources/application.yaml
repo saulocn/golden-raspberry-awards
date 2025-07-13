@@ -6,8 +6,4 @@ quarkus:
   hibernate-orm:
     database:
       generation: drop-and-create
-  container-image:
-    group: saulocn
-    name: golden-raspberry-awards
-    tag: latest
-file-path: "/resources/Movielist.csv"
+file-path: "Movielist.csv"
