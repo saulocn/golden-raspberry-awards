@@ -1,0 +1,13 @@
+quarkus:
+  datasource:
+    db-kind: h2
+    jdbc:
+      url: "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=LEGACY"
+  hibernate-orm:
+    database:
+      generation: drop-and-create
+  container-image:
+    group: saulocn
+    name: golden-raspberry-awards
+    tag: latest
+file-path: "/resources/Movielist.csv"
