@@ -24,8 +24,9 @@ public class MovieService {
     }
 
     @Transactional
-    public void saveMovie(Movie movie) {
+    public Movie saveMovie(Movie movie) {
         entityManager.persist(movie);
+        return movie;
     }
 
     public List<MovieVO> listMoviesByProducers(String producer) {
@@ -53,7 +54,7 @@ public class MovieService {
     }
 
     public Optional<Movie> getById(Long id) {
-        return Optional.of(entityManager.find(Movie.class, id));
+        return Optional.ofNullable(entityManager.find(Movie.class, id));
     }
 
     @Transactional

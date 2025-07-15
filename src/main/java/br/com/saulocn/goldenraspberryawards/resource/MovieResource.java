@@ -3,6 +3,7 @@ package br.com.saulocn.goldenraspberryawards.resource;
 import br.com.saulocn.goldenraspberryawards.resource.vo.MovieVO;
 import br.com.saulocn.goldenraspberryawards.service.MovieService;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -17,6 +18,7 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 
+import java.net.URI;
 import java.util.List;
 
 @Path("movies")
@@ -34,9 +36,13 @@ public class MovieResource {
                     responseCode = "201",
                     description = "Movie created successfully"
             ))
-    public Response saveMovie(MovieVO movieVO) {
-        movieService.saveMovie(movieVO.toMovie());
-        return Response.status(Response.Status.CREATED).build();
+    public Response saveMovie(@Valid MovieVO movieVO) {
+        var movie = movieService.saveMovie(movieVO.toMovie());
+        return Response
+                .status(Response.Status.CREATED)
+                .entity(MovieVO.fromMovie(movie))
+                .location(URI.create(String.format("/movies/%d", movie.getId())))
+                .build();
     }
 
     @PUT
@@ -47,7 +53,7 @@ public class MovieResource {
                     responseCode = "200",
                     description = "Movie updated successfully"
             ))
-    public Response updateMovie(@PathParam("id") Long id, MovieVO movieVO) {
+    public Response updateMovie(@PathParam("id") Long id, @Valid MovieVO movieVO) {
         movieService.updateMovie(id, movieVO.toMovie());
         return Response.status(Response.Status.OK).build();
     }

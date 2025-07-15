@@ -33,7 +33,7 @@ class IntervalResourceTest {
         var minInterval = new Interval("Allan Carr", 1, 1980, 1981);
         var maxInterval = new Interval("Bo Derek", 6, 1984, 1990);
         try (Jsonb jsonb = JsonbBuilder.create()) {
-            MovieVO movieVO = new MovieVO(1981, "Can't Stop the Music", "Allan Carr", true, "Polygram");
+            MovieVO movieVO = MovieVO.of(1981, "Can't Stop the Music", "Allan Carr", true, "Polygram");
             given()
                     .body(jsonb.toJson(movieVO))
                     .header("Content-Type", "application/json")

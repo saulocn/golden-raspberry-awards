@@ -73,6 +73,14 @@ public class Movie {
     @Column(name = "bool_winner", nullable = false)
     private boolean winner;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public int getYear() {
         return year;
     }
