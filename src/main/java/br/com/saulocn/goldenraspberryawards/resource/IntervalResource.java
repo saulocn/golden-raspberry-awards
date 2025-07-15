@@ -18,7 +18,6 @@ public class IntervalResource {
     private IntervalService intervalService;
 
     @GET
-    @Path("intervals")
     @Operation(summary = "List max and min interval of winners")
     public ProducerIntervals getIntervals() {
         return intervalService.getIntervals();

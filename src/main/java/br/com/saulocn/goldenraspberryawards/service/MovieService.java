@@ -9,11 +9,9 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 @RequestScoped
 public class MovieService {
-    private static final Logger LOGGER = Logger.getLogger("MovieService");
 
     @Inject
     private EntityManager entityManager;
@@ -60,8 +58,6 @@ public class MovieService {
     @Transactional
     public void delete(Long id) {
         Optional.of(entityManager.find(Movie.class, id))
-                .ifPresent(movie -> {
-                    entityManager.remove(movie);
-                });
+                .ifPresent(movie -> entityManager.remove(movie));
     }
 }

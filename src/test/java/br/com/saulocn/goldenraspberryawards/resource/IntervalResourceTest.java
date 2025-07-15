@@ -19,7 +19,7 @@ class IntervalResourceTest {
     void testGetIntervals() {
         given()
                 .when()
-                .get("/intervals/intervals")
+                .get("/intervals")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
@@ -47,7 +47,7 @@ class IntervalResourceTest {
 
         given()
                 .when()
-                .get("/intervals/intervals")
+                .get("/intervals")
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)

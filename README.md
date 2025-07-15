@@ -1,58 +1,45 @@
 # golden-raspberry-awards
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Este projeto é uma API REST para gerenciar e informar a respeito de filmes relativos ao prêmio Golden Raspberry Awards,
+também conhecido como "Framboesa de Ouro", que é uma premiação anual que reconhece os piores filmes do ano.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+Essa aplicação utiliza Quarkus como framework, e é capaz de realizar operações CRUD (Create, Read, Update, Delete) em
+filmes, além de fornecer informações sobre o maior e menor intervalo de vencedores do prêmio
 
-## Running the application in dev mode
+Foi implementada uma aplicação que é responsável por ler um arquivo CSV que contém os dados dos filmes e popular o banco
+de dados H2 com essas informações. O arquivo CSV deve estar localizado na pasta `src/main/resources/Movielist.csv` do
+projeto.
 
-You can run your application in dev mode that enables live coding using:
+Foi implementado um arquivo Makefile para facilitar a execução de comandos comuns do projeto, como iniciar a aplicação.
 
-```shell script
-./mvnw quarkus:dev
+Para executar a aplicação, você pode utilizar o comando:
+
+```bash
+make run
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+## Endpoints
 
-## Packaging and running the application
+Os endpoints disponíveis podem ser acessados através do swagger da aplicação, que está disponível em:
 
-The application can be packaged using:
-
-```shell script
-./mvnw package
+```
+http://localhost:8080/swagger-ui
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+![Swagger da Aplicação](swagger.png "Swagger da aplicação")
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+## Testes
 
-If you want to build an _über-jar_, execute the following command:
+Para executar os testes da aplicação, você pode utilizar o comando:
 
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+```bash
+make test
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+## Docker
 
-## Creating a native executable
+Para executar a aplicação em um container Docker, você pode utilizar o comando:
 
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
+```bash
+make run-docker
 ```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/golden-raspberry-awards-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- JDBC Driver - H2 ([guide](https://quarkus.io/guides/datasource)): Connect to the H2 database via JDBC
