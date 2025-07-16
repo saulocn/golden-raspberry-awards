@@ -17,16 +17,16 @@ import java.util.Objects;
         name = Movie.FIND_MIN_INTERVAL,
         query = """
                 SELECT new br.com.saulocn.goldenraspberryawards.resource.vo.Interval(
-                    m.producers, 
-                    ABS(m.year - (SELECT MIN(m2.year) FROM Movie m2 WHERE m2.producers = m.producers AND m2.winner = true)),
-                    (SELECT MIN(m3.year) FROM Movie m3 WHERE m3.producers = m.producers AND m3.winner = true), 
-                    m.year
+                    actualMovie.producers, 
+                    (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)),
+                    (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year), 
+                    actualMovie.year
                 )
-                FROM Movie m 
+                FROM Movie actualMovie 
                 WHERE
-                m.winner = true 
-                AND ABS(m.year - (SELECT MIN(m4.year) FROM Movie m4 WHERE m4.producers = m.producers AND m4.winner = true)) > 0
-                ORDER BY ABS(m.year - (SELECT MIN(m4.year) FROM Movie m4 WHERE m4.producers = m.producers AND m4.winner = true)) ASC
+                actualMovie.winner = true 
+                AND (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) > 0
+                ORDER BY (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) ASC
                 """,
         resultClass = Interval.class
 )
@@ -34,16 +34,16 @@ import java.util.Objects;
         name = Movie.FIND_MAX_INTERVAL,
         query = """
                 SELECT new br.com.saulocn.goldenraspberryawards.resource.vo.Interval(
-                    m.producers,
-                    ABS(m.year - (SELECT MIN(m2.year) FROM Movie m2 WHERE m2.producers = m.producers AND m2.winner = true)),
-                    (SELECT MIN(m3.year) FROM Movie m3 WHERE m3.producers = m.producers AND m3.winner = true), 
-                    m.year
+                    actualMovie.producers, 
+                    (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)),
+                    (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year), 
+                    actualMovie.year
                 )
-                FROM Movie m 
+                FROM Movie actualMovie 
                 WHERE
-                m.winner = true 
-                AND ABS(m.year - (SELECT MIN(m4.year) FROM Movie m4 WHERE m4.producers = m.producers AND m4.winner = true)) > 0
-                ORDER BY ABS(m.year - (SELECT MIN(m4.year) FROM Movie m4 WHERE m4.producers = m.producers AND m4.winner = true)) DESC
+                actualMovie.winner = true 
+                AND (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) > 0
+                ORDER BY (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) DESC
                 """,
         resultClass = Interval.class
 )
