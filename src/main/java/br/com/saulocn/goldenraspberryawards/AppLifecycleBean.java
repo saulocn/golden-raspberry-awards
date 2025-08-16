@@ -1,6 +1,5 @@
 package br.com.saulocn.goldenraspberryawards;
 
-import br.com.saulocn.goldenraspberryawards.model.Movie;
 import br.com.saulocn.goldenraspberryawards.service.MovieService;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -49,7 +48,7 @@ public class AppLifecycleBean {
                     .withCSVParser(parser)
                     .build();
             List<String[]> linhas = csvReader.readAll();
-            linhas.stream().map(Movie::build).forEach(movieService::saveMovie);
+            linhas.forEach(movieService::saveMovieForEachProducer);
             csvReader.close();
         } catch (IOException | CsvException e) {
             throw new RuntimeException(e);

@@ -30,8 +30,30 @@ class IntervalResourceTest {
 
     @Test
     void testGetIntervalsValues() {
+        var minInterval = new Interval("Joel Silver", 1, 1990, 1991);
+        var maxInterval = new Interval("Matthew Vaughn", 13, 2002, 2015);
+
+        given()
+                .when()
+                .get("/intervals")
+                .then()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("min[0].followingWin", equalTo(minInterval.followingWin()))
+                .body("min[0].interval", equalTo(minInterval.interval()))
+                .body("min[0].producer", equalTo(minInterval.producer()))
+                .body("min[0].previousWin", equalTo(minInterval.previousWin()))
+                .body("max[0].followingWin", equalTo(maxInterval.followingWin()))
+                .body("max[0].interval", equalTo(maxInterval.interval()))
+                .body("max[0].producer", equalTo(maxInterval.producer()))
+                .body("max[0].previousWin", equalTo(maxInterval.previousWin()));
+
+    }
+
+    @Test
+    void testGetIntervalsInsertingValues() {
         var minInterval = new Interval("Allan Carr", 1, 1980, 1981);
-        var maxInterval = new Interval("Bo Derek", 6, 1984, 1990);
+        var maxInterval = new Interval("Matthew Vaughn", 13, 2002, 2015);
         try (Jsonb jsonb = JsonbBuilder.create()) {
             MovieVO movieVO = MovieVO.of(1981, "Can't Stop the Music", "Allan Carr", true, "Polygram");
             given()
@@ -51,10 +73,10 @@ class IntervalResourceTest {
                 .then()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("min[0].followingWin", equalTo(minInterval.followingWin()))
-                .body("min[0].interval", equalTo(minInterval.interval()))
-                .body("min[0].producer", equalTo(minInterval.producer()))
-                .body("min[0].previousWin", equalTo(minInterval.previousWin()))
+                .body("min[1].followingWin", equalTo(minInterval.followingWin()))
+                .body("min[1].interval", equalTo(minInterval.interval()))
+                .body("min[1].producer", equalTo(minInterval.producer()))
+                .body("min[1].previousWin", equalTo(minInterval.previousWin()))
                 .body("max[0].followingWin", equalTo(maxInterval.followingWin()))
                 .body("max[0].interval", equalTo(maxInterval.interval()))
                 .body("max[0].producer", equalTo(maxInterval.producer()))

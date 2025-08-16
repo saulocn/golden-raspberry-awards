@@ -13,7 +13,7 @@ public class MovieResourceTest {
     @Test
     void shouldReturnErrorWhenYearIsInvalid() {
         given()
-                .body("{\"year\": 1800, \"title\": \"Invalid Movie\", \"producers\": \"Test Producer\", \"winner\": false, \"studios\": \"Test Studios\"}")
+                .body("{\"year\": 1800, \"title\": \"Invalid Movie\", \"producer\": \"Test Producer\", \"winner\": false, \"studios\": \"Test Studios\"}")
                 .header("Content-Type", "application/json")
                 .when()
                 .post("/movies")
@@ -25,7 +25,7 @@ public class MovieResourceTest {
     @Test
     void shouldReturnErrorWhenTitleIsEmpty() {
         given()
-                .body("{\"year\": 2023, \"title\": \"\", \"producers\": \"Test Producer\", \"winner\": false, \"studios\": \"Test Studios\"}")
+                .body("{\"year\": 2023, \"title\": \"\", \"producer\": \"Test Producer\", \"winner\": false, \"studios\": \"Test Studios\"}")
                 .header("Content-Type", "application/json")
                 .when()
                 .post("/movies")
@@ -37,7 +37,7 @@ public class MovieResourceTest {
     @Test
     void shouldReturnErrorWhenProducersIsEmpty() {
         given()
-                .body("{\"year\": 2023, \"title\": \"Test\", \"producers\": \"\", \"winner\": false, \"studios\": \"Test Studios\"}")
+                .body("{\"year\": 2023, \"title\": \"Test\", \"producer\": \"\", \"winner\": false, \"studios\": \"Test Studios\"}")
                 .header("Content-Type", "application/json")
                 .when()
                 .post("/movies")
@@ -49,7 +49,7 @@ public class MovieResourceTest {
     @Test
     void shouldReturnErrorWhenStudiosIsEmpty() {
         given()
-                .body("{\"year\": 2023, \"title\": \"Test\", \"producers\": \"Test Producer\", \"winner\": false, \"studios\": \"\"}")
+                .body("{\"year\": 2023, \"title\": \"Test\", \"producer\": \"Test Producer\", \"winner\": false, \"studios\": \"\"}")
                 .header("Content-Type", "application/json")
                 .when()
                 .post("/movies")
@@ -61,7 +61,7 @@ public class MovieResourceTest {
     @Test
     void shouldReturnCreatedWhenMovieIsValid() {
         given()
-                .body("{\"year\": 2023, \"title\": \"Valid Movie\", \"producers\": \"Test Producer\", \"winner\": false, \"studios\": \"Test Studios\"}")
+                .body("{\"year\": 2023, \"title\": \"Valid Movie\", \"producer\": \"Test Producer\", \"winner\": false, \"studios\": \"Test Studios\"}")
                 .header("Content-Type", "application/json")
                 .when()
                 .post("/movies")
@@ -69,7 +69,7 @@ public class MovieResourceTest {
                 .statusCode(201)
                 .body("title", equalTo("Valid Movie"))
                 .body("year", equalTo(2023))
-                .body("producers", equalTo("Test Producer"))
+                .body("producer", equalTo("Test Producer"))
                 .body("studios", equalTo("Test Studios"))
                 .body("winner", equalTo(false));
     }

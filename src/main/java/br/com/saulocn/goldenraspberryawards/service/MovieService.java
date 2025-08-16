@@ -22,6 +22,12 @@ public class MovieService {
     }
 
     @Transactional
+    public void saveMovieForEachProducer(String[] strings) {
+        var movies = Movie.build(strings);
+        movies.forEach(entityManager::persist);
+    }
+
+    @Transactional
     public Movie saveMovie(Movie movie) {
         entityManager.persist(movie);
         return movie;
@@ -29,7 +35,7 @@ public class MovieService {
 
     public List<MovieVO> listMoviesByProducers(String producer) {
         return entityManager.createQuery(
-                        "SELECT m FROM Movie m WHERE m.producers LIKE :producer", Movie.class)
+                        "SELECT m FROM Movie m WHERE m.producer LIKE :producer", Movie.class)
                 .setParameter("producer", "%" + producer + "%")
                 .getResultList().stream().map(MovieVO::fromMovie).toList();
     }
@@ -45,7 +51,7 @@ public class MovieService {
         Optional.of(entityManager.find(Movie.class, id))
                 .ifPresent(existingMovie -> {
                     existingMovie.setTitle(movie.getTitle());
-                    existingMovie.setProducers(movie.getProducers());
+                    existingMovie.setProducer(movie.getProducer());
                     existingMovie.setWinner(movie.isWinner());
                     entityManager.merge(existingMovie);
                 });

@@ -10,6 +10,8 @@ import jakarta.persistence.Index;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,16 +19,16 @@ import java.util.Objects;
         name = Movie.FIND_MIN_INTERVAL,
         query = """
                 SELECT new br.com.saulocn.goldenraspberryawards.resource.vo.Interval(
-                    actualMovie.producers, 
-                    (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)),
-                    (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year), 
+                    actualMovie.producer, 
+                    (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producer = actualMovie.producer AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)),
+                    (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producer = actualMovie.producer AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year), 
                     actualMovie.year
                 )
                 FROM Movie actualMovie 
                 WHERE
                 actualMovie.winner = true 
-                AND (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) > 0
-                ORDER BY (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) ASC
+                AND (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producer = actualMovie.producer AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) > 0
+                ORDER BY (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producer = actualMovie.producer AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) ASC
                 """,
         resultClass = Interval.class
 )
@@ -34,26 +36,37 @@ import java.util.Objects;
         name = Movie.FIND_MAX_INTERVAL,
         query = """
                 SELECT new br.com.saulocn.goldenraspberryawards.resource.vo.Interval(
-                    actualMovie.producers, 
-                    (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)),
-                    (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year), 
+                    actualMovie.producer, 
+                    (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producer = actualMovie.producer AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)),
+                    (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producer = actualMovie.producer AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year), 
                     actualMovie.year
                 )
                 FROM Movie actualMovie 
                 WHERE
                 actualMovie.winner = true 
-                AND (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) > 0
-                ORDER BY (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producers = actualMovie.producers AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) DESC
+                AND (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producer = actualMovie.producer AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) > 0
+                ORDER BY (actualMovie.year - (SELECT MAX(lastWinnerMovieBeforeActual.year) FROM Movie lastWinnerMovieBeforeActual WHERE lastWinnerMovieBeforeActual.producer = actualMovie.producer AND lastWinnerMovieBeforeActual.winner = true AND lastWinnerMovieBeforeActual.year < actualMovie.year)) DESC
+                """,
+        resultClass = Interval.class
+)
+@NamedQuery(
+        name = Movie.FIND_ALL_WINNERS,
+        query = """
+                SELECT m
+                FROM Movie m
+                WHERE m.winner = true
+                ORDER BY m.year DESC
                 """,
         resultClass = Interval.class
 )
 @Table(name = "movie",
         indexes = {
-                @Index(name = "idx_producers", columnList = "str_producers"),
+                @Index(name = "idx_producer", columnList = "str_producer"),
                 @Index(name = "idx_winner", columnList = "bool_winner")
         })
 public class Movie {
 
+    public static final String FIND_ALL_WINNERS = "Movie.findAllWinners";
     public static final String FIND_MIN_INTERVAL = "Movie.findMinInterval";
     public static final String FIND_MAX_INTERVAL = "Movie.findMaxInterval";
 
@@ -68,17 +81,13 @@ public class Movie {
     private String title;
     @Column(name = "str_studios", nullable = false)
     private String studios;
-    @Column(name = "str_producers", nullable = false)
-    private String producers;
+    @Column(name = "str_producer", nullable = false)
+    private String producer;
     @Column(name = "bool_winner", nullable = false)
     private boolean winner;
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public int getYear() {
@@ -105,12 +114,12 @@ public class Movie {
         this.studios = studios;
     }
 
-    public String getProducers() {
-        return producers;
+    public String getProducer() {
+        return producer;
     }
 
-    public void setProducers(String producers) {
-        this.producers = producers;
+    public void setProducer(String producer) {
+        this.producer = producer;
     }
 
     public boolean isWinner() {
@@ -125,12 +134,12 @@ public class Movie {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return year == movie.year && winner == movie.winner && Objects.equals(title, movie.title) && Objects.equals(studios, movie.studios) && Objects.equals(producers, movie.producers);
+        return year == movie.year && winner == movie.winner && Objects.equals(title, movie.title) && Objects.equals(studios, movie.studios) && Objects.equals(producer, movie.producer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(year, title, studios, producers, winner);
+        return Objects.hash(year, title, studios, producer, winner);
     }
 
     @Override
@@ -139,18 +148,24 @@ public class Movie {
                "year=" + year +
                ", title='" + title + '\'' +
                ", studios='" + studios + '\'' +
-               ", producers='" + producers + '\'' +
+               ", producer='" + producer + '\'' +
                ", winner=" + winner +
                '}';
     }
 
-    public static Movie build(String[] strings) {
-        Movie movie = new Movie();
-        movie.setYear(Integer.parseInt(strings[0]));
-        movie.setTitle(strings[1]);
-        movie.setStudios(strings[2]);
-        movie.setProducers(strings[3]);
-        movie.setWinner("yes".equals(strings[4]));
-        return movie;
+    public static List<Movie> build(String[] strings) {
+        String[] producers = strings[3].split(",|\\band\\b");
+        return Arrays.stream(producers)
+                .map(String::trim)
+                .filter(producer -> !producer.isBlank())
+                .map(producer -> {
+                    Movie movie = new Movie();
+                    movie.setYear(Integer.parseInt(strings[0]));
+                    movie.setTitle(strings[1]);
+                    movie.setProducer(producer);
+                    movie.setStudios(strings[2]);
+                    movie.setWinner("yes".equals(strings[4]));
+                    return movie;
+                }).toList();
     }
 }

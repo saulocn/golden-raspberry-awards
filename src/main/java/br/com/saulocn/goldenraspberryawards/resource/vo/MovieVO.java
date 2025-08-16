@@ -11,13 +11,13 @@ public record MovieVO(
         @NotEmpty
         String title,
         @NotEmpty
-        String producers,
+        String producer,
         boolean winner,
         @NotEmpty
         String studios
 ) {
-    public static MovieVO of(int year, String title, String producers, boolean winner, String studios) {
-        return new MovieVO(null, year, title, producers, winner, studios);
+    public static MovieVO of(int year, String title, String producer, boolean winner, String studios) {
+        return new MovieVO(null, year, title, producer, winner, studios);
     }
 
     public static MovieVO fromMovie(Movie movie) {
@@ -25,7 +25,7 @@ public record MovieVO(
                 movie.getId(),
                 movie.getYear(),
                 movie.getTitle(),
-                movie.getProducers(),
+                movie.getProducer(),
                 movie.isWinner(),
                 movie.getStudios()
         );
@@ -35,7 +35,7 @@ public record MovieVO(
         Movie movie = new Movie();
         movie.setYear(year);
         movie.setTitle(title);
-        movie.setProducers(producers);
+        movie.setProducer(producer);
         movie.setWinner(winner);
         movie.setStudios(studios);
         return movie;

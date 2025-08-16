@@ -23,7 +23,7 @@ make run
 Os endpoints disponíveis podem ser acessados através do swagger da aplicação, que está disponível em:
 
 ```
-http://localhost:8080/swagger-ui
+http://localhost:8080/q/swagger-ui/#/
 ```
 
 ![Swagger da Aplicação](swagger.png "Swagger da aplicação")
@@ -36,10 +36,22 @@ Para executar os testes da aplicação, você pode utilizar o comando:
 make test
 ```
 
+Ou:
+
+```bash
+./mvnw test
+```
+
 ## Docker
 
 Para executar a aplicação em um container Docker, você pode utilizar o comando:
 
 ```bash
 make run-docker
+```
+
+Para verificar os logs do container
+
+```bash
+make logs
 ```
