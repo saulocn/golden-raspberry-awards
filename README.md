@@ -28,6 +28,21 @@ http://localhost:8080/q/swagger-ui/#/
 
 ![Swagger da Aplicação](swagger.png "Swagger da aplicação")
 
+### Endpoint de intervalos
+
+O endpoint para se obter os intervalos menor e maior entre os vendedores é:
+
+```http
+###
+GET  http://localhost:8080/intervals
+```
+
+Ou via curl
+
+```bash
+curl --request GET --url http://localhost:8080/intervals 
+```
+
 ## Testes
 
 Para executar os testes da aplicação, você pode utilizar o comando:
