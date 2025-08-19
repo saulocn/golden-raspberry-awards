@@ -21,7 +21,7 @@ jobs:
           java-version: '21'
 
       - name: Build com Maven
-        run: ./mvnw clean build
+        run: ./mvnw clean package -Dquarkus.package.jar.type=uber-jar
 
       - name: Executar testes
         run: ./mvnw test
