@@ -1,4 +1,5 @@
 quarkus:
+  default-locale: pt-BR
   datasource:
     db-kind: h2
     jdbc:
