@@ -21,7 +21,7 @@ jobs:
           java-version: '17'
 
       - name: Build com Maven
-        run: ./mvnw clean install
+        run: ./mvnw clean build
 
       - name: Executar testes
         run: ./mvnw test
